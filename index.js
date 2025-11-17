@@ -16,6 +16,10 @@ const about = new SlashCommandBuilder()
     .setName('about')
     .setDescription('Botの詳細を表示します。');
 
+const github = new SlashCommandBuilder()
+    .setName('github')
+    .setDescription('GithubレポジトリのURLを取得します。');
+
 const serverlist = new SlashCommandBuilder()
     .setName('serverlist')
     .setDescription('サーバーの一覧を取得します。オーナー専用。');
@@ -31,7 +35,9 @@ const sleep = (time) => new Promise((resolve) => setTimeout(resolve, time));
 
 client.on(Events.ClientReady, async () => {
     const data = [
-        send_command.toJSON(), stickers_send_command.toJSON(), about.toJSON(), serverlist.toJSON(), echo.toJSON()
+        send_command.toJSON(), stickers_send_command.toJSON(),
+        about.toJSON(), github.toJSON(),
+        serverlist.toJSON(), echo.toJSON()
     ];
 
     const rest = new REST({ version: '10' }).setToken(token);
@@ -189,6 +195,10 @@ client.on(Events.InteractionCreate, async (interaction) => {
                     embeds: [about_embed]
                 }
             )
+        } else if (interaction.commandName == "github") {
+            await interaction.reply(
+                "このBotのレポジトリです。\nhttps://github.com/sharkbot-neko/Emozip/"
+            );
         } else if (interaction.commandName == "serverlist") {
             if (interaction.user.id != OWNERID) {
                 await interaction.reply('Botオーナー専用です。')
